@@ -106,18 +106,21 @@ def GD(F, Op, Nmax, Tol, Lambda, x0):
         exit()
 
 def plot_contour(f, x_min, x_max, y_min, y_max, hist):
-    print(type(hist[0][0]))
-    print(hist[0][0])
-    X = [float(i[0]) for i in hist]
-    Y = [float(i[1]) for i in hist]
+
+    print(hist[-1])
+    X = [(i[0]) for i in hist]
+    Y = [(i[1]) for i in hist]
     X, Y = np.meshgrid(X, Y)
-    X, Y = np.meshgrid(X, Y)
+
     Z = f([X, Y])
 
     plt.figure(figsize=(8, 6))
-    contours = plt.contour(X, Y, Z, levels=np.logspace(-2, 3, 20))
+    contours = plt.contour(X, Y, Z)
+    plt.xlabel('X1')
+    plt.ylabel('X2')
     plt.clabel(contours, inline=True, fontsize=8)
     plt.colorbar(label='Objective function value')
+    print(functions[f])
     plt.title('Contour Plot of '+functions[f])
     plt.show()
 
@@ -132,10 +135,10 @@ def helper(parameters):
     print('-----------------------------------')
     x0 = np.array(parameters[0])
     x_min = GD(parameters[3],parameters[4],parameters[5],parameters[6],parameters[7],x0)
-    print("Minimum Objective function value:", str(f1(x_min[0])))
+    print("Minimum Objective function value:", str(parameters[3](x_min[0])))
     print("Local minima for f1:", x_min[0])
     print("Number of steps:", len(x_min[1]))
-    plot_contour(f1, parameters[1][0], parameters[1][1], parameters[2][0], parameters[2][1], x_min[1])
+    plot_contour(parameters[3], parameters[1][0], parameters[1][1], parameters[2][0], parameters[2][1], x_min[1])
     plot_optimization(x_min[2])
     print('-----------------------------------')
 
